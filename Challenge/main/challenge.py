@@ -2,7 +2,6 @@ import numpy as np
 
 
 def board_maker(board_dimentions,snake_position):
-
     rows = board_dimentions[0]
     colunms = board_dimentions[1]
 
@@ -15,6 +14,10 @@ def board_maker(board_dimentions,snake_position):
             row = snake_position[i][0]
             colunm = snake_position[i][1]
             board[row][colunm] = 2
+        elif i == snake_lenth-1:
+            row = snake_position[i][0]
+            colunm = snake_position[i][1]
+            board[row][colunm] = 3
         else:
             row = snake_position[i][0]
             colunm = snake_position[i][1]
@@ -49,7 +52,7 @@ def movement_test(snake_head,board_dimentions,board):
             new_position_colunm = new_position[1]
             
             # Test for the snake body limits
-            if board[new_position_row,new_position_colunm] == 0:
+            if board[new_position_row,new_position_colunm] == 0 or board[new_position_row,new_position_colunm] == 3:
                 candidates_movements.append(new_position)
 
     return candidates_movements
@@ -70,10 +73,8 @@ def nexts_movements(board_dimentions,snake_position,depth):
             dicio[str(possible_movement)] = nexts_movements(board_dimentions,change_snake_position,depth-1)
         return dicio
 
-board_dimentions = [4, 3]
-snake_position = [[2, 2], [3, 2], [3, 1], [3, 0], [2, 0], [1, 0], [0, 0]]
-depth = 3
 
-result = nexts_movements(board_dimentions,snake_position,depth)
-result = str(result)
-result.count('End of Sequence')
+def number_of_available_different_paths(board, snake, depth):
+    result = nexts_movements(board,snake,depth)
+    result = str(result)
+    return result.count('End of Sequence')
